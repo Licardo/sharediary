@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,9 +14,9 @@
         android:layout_weight="1"
         android:orientation="horizontal">
         <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_bj"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:placeholderImage="@color/green_light"
             app:roundAsCircle="true"
             />
         <View
@@ -42,6 +43,7 @@
                 />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:text="2015-01"
+                android:text="2016-10"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -64,7 +66,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="14sp"
-                android:text="北京"
+                android:text="贵州"
                 />
         </LinearLayout>
         <View
@@ -72,9 +74,9 @@
             android:layout_height="1dp"
             android:background="@color/gray_light"/>
         <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_gz"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:placeholderImage="@color/gray_light"
             app:roundAsCircle="true"
             />
     </LinearLayout>
@@ -85,9 +87,9 @@
         android:layout_weight="1"
         android:orientation="horizontal">
         <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_hz"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:placeholderImage="@color/colorAccent"
             app:roundAsCircle="true"
             />
         <View
@@ -102,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:text="2015-01"
+                android:text="2017-01"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -110,7 +112,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="14sp"
-                android:text="北京"
+                android:text="杭州"
                 />
         </LinearLayout>
     </LinearLayout>
