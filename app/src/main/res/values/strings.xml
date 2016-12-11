@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">WeTalk</string>
+    <string name="writer_text">from %1$s</string>
+    <string name="temp_weather">%1$s-%2$sC %3$s</string>
+    <string name="comment_author_time">%1$s(%2$s)</string>
+    <string name="hint_comment">评论一下吧...</string>
+    <string name="sms_template">登录验证码1</string>
+    <string name="diary_submit">发布日记</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

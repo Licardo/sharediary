@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_login"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include layout="@layout/custom_toolbar"/>
+
+    <android.support.percent.PercentFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_widthPercent="70%"
+            android:inputType="phone"
+            android:ems="11"
+            android:id="@+id/et_phone"
+            android:hint="输入手机号"
+            android:padding="5dp"
+            android:textSize="12sp"
+            android:background="@drawable/shape_edit_comment"/>
+        <Button
+            android:id="@+id/btn_accquire"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            app:layout_widthPercent="30%"
+            android:background="@drawable/shape_edit_comment"
+            android:text="获取验证码"
+            android:textSize="12sp"
+            android:textColor="@color/gray_light"
+            android:visibility="gone"
+            />
+    </android.support.percent.PercentFrameLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:inputType="number"
+        android:ems="10"
+        android:textSize="12sp"
+        android:hint="第一次登陆的用户输入验证码"
+        android:background="@drawable/shape_edit_comment"
+        android:id="@+id/et_password"
+        android:visibility="gone"/>
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="5dp"
+        android:text="登录"
+        android:background="@drawable/shape_edit_comment"
+        />
+</LinearLayout>

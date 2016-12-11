@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_we"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--Toolbar-->
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/custom_toolbar"/>
+
+    <RadioGroup
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="52dip"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:drawableTop="@drawable/selector_main"
+            android:text="首页"
+            android:button="@null"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_record"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_news"
+            android:text="见闻"/>
+
+        <RadioButton
+            android:id="@+id/rb_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="对话"
+            android:drawableTop="@drawable/selector_chat"/>
+        <!--<RadioButton-->
+            <!--android:id="@+id/rb_remark"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:button="@null"-->
+            <!--android:padding="5dp"-->
+            <!--android:text="一天"-->
+            <!--android:drawableTop="@drawable/selector_one_day"/>-->
+    </RadioGroup>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@id/tabs"
+        android:background="@color/gray_light"
+        />
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="1dp"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/tabs">
+
+    </FrameLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tabs"
+        android:layout_margin="@dimen/fab_margin"
+        app:elevation="6dp"
+        app:backgroundTint="@color/colorAccent"
+        app:rippleColor="@color/colorPrimary"
+        app:pressedTranslationZ="12dp"
+        android:src="@android:drawable/ic_dialog_dialer"/>
+</RelativeLayout>
