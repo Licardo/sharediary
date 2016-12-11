@@ -158,7 +158,6 @@ public class WEDetailActivity extends BaseActivity implements View.OnClickListen
                 final BmobIMUserInfo userInfo = new BmobIMUserInfo();
                 userInfo.setUserId(mWEUser.getObjectId());
                 userInfo.setName(mWEUser.getUsername());
-//                userInfo.setAvatar(mWEUser.getAvatar());
                 BmobIM.getInstance().startPrivateConversation(userInfo, new ConversationListener() {
                     @Override
                     public void done(BmobIMConversation bmobIMConversation, BmobException e) {

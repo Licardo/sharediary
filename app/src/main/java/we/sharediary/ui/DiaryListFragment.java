@@ -14,7 +14,6 @@ import com.sch.rfview.manager.AnimRFLinearLayoutManager;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import cn.bmob.newim.BmobIM;
@@ -34,7 +33,6 @@ import we.sharediary.table.WEDiary;
 import we.sharediary.table.WEUser;
 import we.sharediary.util.BusProviderUtil;
 import we.sharediary.util.DialogUtils;
-import we.sharediary.util.StringUtils;
 
 public class DiaryListFragment extends BaseFragment implements ClickNameListener{
 
@@ -85,28 +83,17 @@ public class DiaryListFragment extends BaseFragment implements ClickNameListener
      * 获取日记列表
      */
     private void getAllDiary(){
-        String loverPhone = (String) readPreferences(Constants.LOVER_USER_PHONE, 0);
-        String minePhone = (String) readPreferences(Constants.USER_PHONE, 0);
         BmobQuery<WEDiary> query = new BmobQuery();
         WEUser user = new WEUser();
         String objectid = (String) readPreferences(Constants.USER_OBJECTID, 0);
         user.setObjectId(objectid);
-//        query.addWhereEqualTo("author", user);
         query.setSkip(loadCount*Constants.DEFAULT_SHOW_COUNT);
         query.setLimit(Constants.DEFAULT_SHOW_COUNT);
-        if (!StringUtils.isEmpty(loverPhone)) {
-            String[] values = {minePhone, loverPhone};
-            query.addWhereContainedIn("phone", Arrays.asList(values));
-        }else {
-            query.addWhereEqualTo("phone", minePhone);
-        }
         query.order("-updatedAt");
         query.include("author");
-//        mDialog.show();
         query.findObjects(this.getActivity(), new FindListener<WEDiary>() {
             @Override
             public void onSuccess(List<WEDiary> list) {
-//                mDialog.cancel();
                 if (list != null) {
                     handleResult(list, loadCount==0);
                 }
@@ -119,7 +106,6 @@ public class DiaryListFragment extends BaseFragment implements ClickNameListener
 
             @Override
             public void onError(int i, String s) {
-//                mDialog.cancel();
                 Snackbar.make(recyclerView, i+"?"+s, Snackbar.LENGTH_LONG).setAction("retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -167,7 +153,6 @@ public class DiaryListFragment extends BaseFragment implements ClickNameListener
         final BmobIMUserInfo userInfo = new BmobIMUserInfo();
         userInfo.setUserId(user.getObjectId());
         userInfo.setName(user.getUsername());
-//        userInfo.setAvatar(user.getAvatar());
         BmobIM.getInstance().startPrivateConversation(userInfo, new ConversationListener() {
             @Override
             public void done(BmobIMConversation bmobIMConversation, BmobException e) {

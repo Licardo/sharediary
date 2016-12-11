@@ -87,7 +87,6 @@ public class WEActivity extends BaseActivity implements View.OnClickListener{
         });
         mActionButton.setOnClickListener(this);
         userid = (String) readPreferences(Constants.USER_OBJECTID, 0);
-//        connectChat();
     }
 
     @Override
@@ -150,7 +149,7 @@ public class WEActivity extends BaseActivity implements View.OnClickListener{
                 mActionButton.setVisibility(View.VISIBLE);
                 isShowExitIcon = false;
                 isShowRefresh = false;
-                isShowBind = true;
+                isShowBind = false;
                 if (mWEMainFragment != null) {
                     ft.show(mWEMainFragment);
                 }else {
