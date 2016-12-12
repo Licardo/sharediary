@@ -1,9 +1,12 @@
 package we.sharediary.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,7 +23,17 @@ LoadingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        initView();
         initData();
+    }
+
+    private void initView(){
+        SimpleDraweeView ivBj = (SimpleDraweeView) findViewById(R.id.iv_bj);
+        SimpleDraweeView ivGz = (SimpleDraweeView) findViewById(R.id.iv_gz);
+        SimpleDraweeView ivHz = (SimpleDraweeView) findViewById(R.id.iv_hz);
+        ivBj.setImageURI(Uri.parse("http://bmob-cdn-7671.b0.upaiyun.com/2016/12/11/1bf9447240ca5fc38003a14870b5a03c.png"));
+        ivGz.setImageURI(Uri.parse("http://bmob-cdn-7671.b0.upaiyun.com/2016/12/11/d7fafa1c409d3dff8080193bd628bdce.png"));
+        ivHz.setImageURI(Uri.parse("http://bmob-cdn-7671.b0.upaiyun.com/2016/12/11/fe9738634014e9008050a0d8776405d1.png"));
     }
 
     private void initData() {
