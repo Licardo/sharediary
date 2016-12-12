@@ -28,7 +28,6 @@
             android:layout_weight="3"
             android:background="@drawable/shape_edit_comment"
             android:padding="3dp"
-            android:layout_marginLeft="10dp"
             android:textSize="15sp"
             android:hint="@string/hint_comment"/>
         <Button
@@ -41,6 +40,7 @@
             />
     </LinearLayout>
     <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_above="@id/ll_send"
@@ -50,7 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/line"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
