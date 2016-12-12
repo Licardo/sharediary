@@ -25,9 +25,9 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.RequestSMSCodeListener;
 import cn.bmob.v3.listener.SQLQueryListener;
-import cn.bmob.v3.listener.SaveListener;
 import we.sharediary.R;
 import we.sharediary.base.BaseActivity;
 import we.sharediary.base.Constants;
@@ -89,12 +89,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 MobclickAgent.onEvent(LoginActivity.this, "Accquire_Code");
                 //定义与事件相关的属性信息  zhuge
                 try {
-                JSONObject eventObject = new JSONObject();
+                    JSONObject eventObject = new JSONObject();
                     eventObject.put("分类", "验证码");
                     eventObject.put("名称", phone);
                     //记录事件
-                ZhugeSDK.getInstance().track(getApplicationContext(), "获取验证码",
-                        eventObject);
+                    ZhugeSDK.getInstance().track(getApplicationContext(), "获取验证码",
+                            eventObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -122,15 +122,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (!isValidated(phone)) {
                     return;
                 }
-                //用户先点击登录  老用户直接登录 新用户显示验证码控件
-                if (!isExistUser && phone.equals(tempPhone)) {
-                    //第二次点击登录
-                    String code = etPassword.getText().toString().trim();
-                    insertLoginInfo(phone, code);
-                } else {
-                    //第一次点击登录
-                    getUserInfo(phone);
-                }
+                String code = etPassword.getText().toString().trim();
+                insertLoginInfo(phone, code);
                 break;
         }
         tempPhone = etPhone.getText().toString().trim();
@@ -171,16 +164,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         user.setMobilePhoneNumber(phone);
         user.setUsername(Util.filterPhone(phone));
         user.setPassword(phone);
-//        user.setAvatar("http://bmob-cdn-7671.b0.upaiyun.com/2016/11/23/63884761d56b40e1b9511d74d1057536.jpg");
-        user.signOrLogin(this, code, new SaveListener() {
+//        user.signOrLogin(this, code, new SaveListener() {
+//            @Override
+//            public void onSuccess() {
+//                getUserInfo(phone);
+//            }
+//
+//            @Override
+//            public void onFailure(int i, String s) {
+//                Snackbar.make(btnAccquire, i + s, Snackbar.LENGTH_LONG).show();
+//            }
+//        });
+        user.signOrLoginByMobilePhone(this, phone, code, new LogInListener<WEUser>() {
             @Override
-            public void onSuccess() {
-                getUserInfo(phone);
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Snackbar.make(btnAccquire, i + s, Snackbar.LENGTH_LONG).show();
+            public void done(WEUser user, BmobException e) {
+                if (user != null) {
+                    getUserInfo(phone);
+                }else {
+                    Snackbar.make(btnAccquire, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -200,62 +202,47 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mDialog.show();
         String sql = "select * from _User where mobilePhoneNumber = '" + phone + "'";
         new BmobQuery<WEUser>().doSQLQuery(this, sql, new SQLQueryListener<WEUser>() {
-            @Override
-            public void done(BmobQueryResult<WEUser> bmobQueryResult, BmobException e) {
-                mDialog.cancel();
-                if (e == null) {
-                    if (bmobQueryResult == null || bmobQueryResult.getResults() == null ||
-                            bmobQueryResult.getResults().size() <= 0) {
-                        updateLoginView(false);
-                        onClick(btnAccquire);
-                        return;
-                    }
-                    //数据库已经存在用户
-                    WEUser user = bmobQueryResult.getResults().get(0);
-                    writePreferences(Constants.USER_PHONE, user.getMobilePhoneNumber());
-                    writePreferences(Constants.USER_OBJECTID, user.getObjectId());
-                    writePreferences(Constants.USER_NAME, user.getUsername());
-                    writePreferences(Constants.LOVER_USER_PHONE, user.getLoverPhone());
-                    updateLoginView(true);
+                    @Override
+                    public void done(BmobQueryResult<WEUser> bmobQueryResult, BmobException e) {
+                        mDialog.cancel();
+                        if (e == null) {
+                            if (bmobQueryResult == null || bmobQueryResult.getResults() == null ||
+                                    bmobQueryResult.getResults().size() <= 0) {
+                                return;
+                            }
+                            //数据库已经存在用户
+                            WEUser user = bmobQueryResult.getResults().get(0);
+                            writePreferences(Constants.USER_PHONE, user.getMobilePhoneNumber());
+                            writePreferences(Constants.USER_OBJECTID, user.getObjectId());
+                            writePreferences(Constants.USER_NAME, user.getUsername());
+                            writePreferences(Constants.LOVER_USER_PHONE, user.getLoverPhone());
 
-                    //诸葛io
-                    try {
-                        //定义用户识别码
-                        String userid = user.getObjectId();
-                        //定义用户属性
-                        JSONObject personObject = new JSONObject();
-                        personObject.put("name", user.getMobilePhoneNumber());
-                        personObject.put("avatar", user.getLoverPhone());
-                        //标识用户
-                        ZhugeSDK.getInstance().identify(getApplicationContext(), userid,
-                                personObject);
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
-                    //登录
-                    user.setPassword(user.getMobilePhoneNumber());
-                    user.login(LoginActivity.this, new SaveListener() {
-                        @Override
-                        public void onSuccess() {
-                            //第一次点击登录 老用户
+                            //诸葛io
+                            try {
+                                //定义用户识别码
+                                String userid = user.getObjectId();
+                                //定义用户属性
+                                JSONObject personObject = new JSONObject();
+                                personObject.put("name", user.getMobilePhoneNumber());
+                                personObject.put("avatar", user.getLoverPhone());
+                                //标识用户
+                                ZhugeSDK.getInstance().identify(getApplicationContext(), userid,
+                                        personObject);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                            //登录
                             Intent intent = new Intent(LoginActivity.this, WEActivity.class);
                             startActivity(intent);
                             finish();
-                        }
 
-                        @Override
-                        public void onFailure(int i, String s) {
-                            Snackbar.make(etPhone, "登录失败，请重新登录", Snackbar.LENGTH_LONG).show();
+                        } else {
+                            //数据库没有这个用户
                         }
-                    });
-
-                } else {
-                    //数据库没有这个用户
-                    updateLoginView(false);
-                    onClick(btnAccquire);
+                    }
                 }
-            }
-        });
+
+        );
     }
 
     /**
