@@ -25,9 +25,9 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.RequestSMSCodeListener;
 import cn.bmob.v3.listener.SQLQueryListener;
-import cn.bmob.v3.listener.SaveListener;
 import we.sharediary.R;
 import we.sharediary.base.BaseActivity;
 import we.sharediary.base.Constants;
@@ -172,16 +172,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         user.setMobilePhoneNumber(phone);
         user.setUsername(Util.filterPhone(phone));
         user.setPassword(phone);
-//        user.setAvatar("http://bmob-cdn-7671.b0.upaiyun.com/2016/11/23/63884761d56b40e1b9511d74d1057536.jpg");
-        user.signOrLogin(this, code, new SaveListener() {
+//        user.signOrLogin(this, code, new SaveListener() {
+//            @Override
+//            public void onSuccess() {
+//                getUserInfo(phone);
+//            }
+//
+//            @Override
+//            public void onFailure(int i, String s) {
+//                Snackbar.make(btnAccquire, i + s, Snackbar.LENGTH_LONG).show();
+//            }
+//        });
+        user.signOrLoginByMobilePhone(this, phone, code, new LogInListener<WEUser>() {
             @Override
-            public void onSuccess() {
-                getUserInfo(phone);
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Snackbar.make(btnAccquire, i + s, Snackbar.LENGTH_LONG).show();
+            public void done(WEUser user, BmobException e) {
+                if (user == null) {
+                    getUserInfo(phone);
+                } else {
+                    Snackbar.make(btnAccquire, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -208,7 +217,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (bmobQueryResult == null || bmobQueryResult.getResults() == null ||
                             bmobQueryResult.getResults().size() <= 0) {
 //                        updateLoginView(false);
-                        onClick(btnAccquire);
+//                        onClick(btnAccquire);
                         return;
                     }
                     //数据库已经存在用户
@@ -234,21 +243,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         e1.printStackTrace();
                     }
                     //登录
-                    user.setPassword(user.getMobilePhoneNumber());
-                    user.login(LoginActivity.this, new SaveListener() {
-                        @Override
-                        public void onSuccess() {
-                            //第一次点击登录 老用户
-                            Intent intent = new Intent(LoginActivity.this, WEActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-                            Snackbar.make(etPhone, "登录失败，请重新登录", Snackbar.LENGTH_LONG).show();
-                        }
-                    });
+//                    user.setPassword(user.getMobilePhoneNumber());
+//                    user.login(LoginActivity.this, new SaveListener() {
+//                        @Override
+//                        public void onSuccess() {
+//                            //第一次点击登录 老用户
+                    Intent intent = new Intent(LoginActivity.this, WEActivity.class);
+                    startActivity(intent);
+                    finish();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(int i, String s) {
+//                            Snackbar.make(etPhone, "登录失败，请重新登录", Snackbar.LENGTH_LONG).show();
+//                        }
+//                    });
 
                 } else {
                     //数据库没有这个用户
