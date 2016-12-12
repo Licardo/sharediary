@@ -186,7 +186,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         user.signOrLoginByMobilePhone(this, phone, code, new LogInListener<WEUser>() {
             @Override
             public void done(WEUser user, BmobException e) {
-                if (user == null) {
+                if (user != null) {
                     getUserInfo(phone);
                 } else {
                     Snackbar.make(btnAccquire, e.getMessage(), Snackbar.LENGTH_LONG).show();
