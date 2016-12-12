@@ -89,12 +89,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 MobclickAgent.onEvent(LoginActivity.this, "Accquire_Code");
                 //定义与事件相关的属性信息  zhuge
                 try {
-                JSONObject eventObject = new JSONObject();
+                    JSONObject eventObject = new JSONObject();
                     eventObject.put("分类", "验证码");
                     eventObject.put("名称", phone);
                     //记录事件
-                ZhugeSDK.getInstance().track(getApplicationContext(), "获取验证码",
-                        eventObject);
+                    ZhugeSDK.getInstance().track(getApplicationContext(), "获取验证码", eventObject);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -119,6 +119,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
 
                 closeKey(etPassword);
+
                 if (!isValidated(phone)) {
                     return;
                 }
@@ -206,7 +207,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (e == null) {
                     if (bmobQueryResult == null || bmobQueryResult.getResults() == null ||
                             bmobQueryResult.getResults().size() <= 0) {
-                        updateLoginView(false);
+//                        updateLoginView(false);
                         onClick(btnAccquire);
                         return;
                     }
@@ -216,7 +217,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     writePreferences(Constants.USER_OBJECTID, user.getObjectId());
                     writePreferences(Constants.USER_NAME, user.getUsername());
                     writePreferences(Constants.LOVER_USER_PHONE, user.getLoverPhone());
-                    updateLoginView(true);
+//                    updateLoginView(true);
 
                     //诸葛io
                     try {
@@ -251,8 +252,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 } else {
                     //数据库没有这个用户
-                    updateLoginView(false);
-                    onClick(btnAccquire);
+//                    updateLoginView(false);
+//                    onClick(btnAccquire);
                 }
             }
         });

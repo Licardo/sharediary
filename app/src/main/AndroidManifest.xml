@@ -40,7 +40,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.CustomerTheme">
-        <activity android:name=".ui.WEDetailActivity"/>
+        <activity android:name=".ui.WEDetailActivity"
+                  android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ui.WEActivity"
             android:windowSoftInputMode="adjustPan">
