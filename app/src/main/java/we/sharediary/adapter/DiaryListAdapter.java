@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -73,7 +74,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.View
                 }
             });
         }
-        holder.tvAuthor.setOnClickListener(new View.OnClickListener() {
+        holder.ivChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onClickNameListener(diary.getAuthor());
@@ -92,6 +93,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.View
         public TextView tvAuthor;
         public TextView tvContent;
         public CardView mCardView;
+        public ImageView ivChat;
 
         public ViewHolder(View view) {
             super(view);
@@ -99,6 +101,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.View
             tvDate = (TextView) view.findViewById(R.id.tv_date);
             tvAuthor = (TextView) view.findViewById(R.id.tv_author);
             tvContent = (TextView) view.findViewById(R.id.tv_content);
+            ivChat = (ImageView) view.findViewById(R.id.iv_chat);
             if (view instanceof CardView) {
                 mCardView = (CardView) view;
             }

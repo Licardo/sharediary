@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -49,6 +50,7 @@ public class WEDetailActivity extends BaseActivity implements View.OnClickListen
     private Toolbar mToolbar;
     private EditText etContent;
     private Button btnSend;
+    private ImageView ivChat;
     private WEDetailAdapter mAdapter;
     private List<WEComment> commentList;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,6 +74,7 @@ public class WEDetailActivity extends BaseActivity implements View.OnClickListen
         tvWriter = (TextView) findViewById(R.id.tv_writer);
         etContent = (EditText) findViewById(R.id.et_content);
         btnSend = (Button) findViewById(R.id.btn_send);
+        ivChat = (ImageView) findViewById(R.id.iv_chat);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(mToolbar);
@@ -82,7 +85,7 @@ public class WEDetailActivity extends BaseActivity implements View.OnClickListen
                 finish();
             }
         });
-        tvWriter.setOnClickListener(this);
+        ivChat.setOnClickListener(this);
     }
     private void initData(){
         mDialog = DialogUtils.getProgressBar(this, false);
