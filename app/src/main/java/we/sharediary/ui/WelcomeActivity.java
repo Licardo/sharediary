@@ -52,8 +52,8 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
         View view2 = inflater.inflate(R.layout.activity_welcome_view2, null);
         ImageView welcomeImage1 = (ImageView) view1.findViewById(R.id.iv_content);
         ImageView welcomeImage2 = (ImageView) view2.findViewById(R.id.iv_content);
-        loadImage(welcomeImage1, "http://fourbeautiful.cn/data/20151222.jpg");
-        loadImage(welcomeImage2, "http://fourbeautiful.cn/data/20151224.jpg");
+        loadImage(welcomeImage1, "http://fourbeautiful.cn/data/welcome1.jpg");
+        loadImage(welcomeImage2, "http://fourbeautiful.cn/data/welcome2.jpg");
         mViewList.add(view1);
         mViewList.add(view2);
         WelcomePageAdapter adapter = new WelcomePageAdapter(this);
