@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -39,6 +40,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private Button btnAccquire, btnLogin;
     private EditText etPhone, etPassword;
+    private Toolbar mToolbar;
     private Timer mTimer;
     private TimerTask mTimerTask;
     private int time = 59;
@@ -56,6 +58,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initView() {
+        mToolbar = (Toolbar) findViewById(R.id.tl_custom);
+        mToolbar.setTitle("登录");
+        setSupportActionBar(mToolbar);
         etPassword = (EditText) findViewById(R.id.et_password);
         etPhone = (EditText) findViewById(R.id.et_phone);
         btnAccquire = (Button) findViewById(R.id.btn_accquire);

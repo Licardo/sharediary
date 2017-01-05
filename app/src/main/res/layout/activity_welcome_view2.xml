@@ -2,14 +2,13 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/green_light">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:text="第二个界面"/>
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        />
 
     <Button
         android:id="@+id/btn_start"
@@ -20,6 +19,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="50dp"
         android:text="开始体验"
-        android:background="@drawable/shape_diary_submit"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_diary_welcome_button"
         />
 </FrameLayout>
