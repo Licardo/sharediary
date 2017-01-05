@@ -173,6 +173,9 @@
         <meta-data
             android:name="ZHUGE_CHANNEL"
             android:value="Xiaomi"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d08951bd4b3250b297a6e5d76c41134f97f12713" />
     </application>
 
 </manifest>

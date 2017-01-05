@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 
 import cn.bmob.newim.BmobIM;
+import io.fabric.sdk.android.Fabric;
 import we.sharediary.im.DemoMessageHandler;
 
 
@@ -27,6 +29,7 @@ public class BaseApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         instance = this;
         Fresco.initialize(this);
 
