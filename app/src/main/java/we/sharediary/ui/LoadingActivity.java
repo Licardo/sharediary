@@ -53,6 +53,7 @@ LoadingActivity extends BaseActivity {
                 }
             }, 1500);
         }
+
     }
 
     private Handler mHandler = new Handler(){

@@ -2,6 +2,7 @@ package we.sharediary.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.tencent.tinker.lib.tinker.TinkerInstaller;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Timer;
@@ -28,13 +30,11 @@ import cn.bmob.v3.listener.UpdateListener;
 import we.sharediary.R;
 import we.sharediary.base.BaseActivity;
 import we.sharediary.base.Constants;
-import we.sharediary.listener.BindListener;
 import we.sharediary.listener.ExitListener;
 import we.sharediary.result.RefreshEvent;
 import we.sharediary.table.WEUser;
 import we.sharediary.util.BusProviderUtil;
 import we.sharediary.util.DialogUtils;
-import we.sharediary.util.StringUtils;
 import we.sharediary.util.Util;
 
 public class WEActivity extends BaseActivity implements View.OnClickListener{
@@ -66,6 +66,7 @@ public class WEActivity extends BaseActivity implements View.OnClickListener{
     private void initView(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.app_name));//设置Toolbar标题
+//        toolbar.setTitle("插件你TM终于成功显示了");
         setSupportActionBar(toolbar);
         rbHome = (RadioButton) findViewById(R.id.rb_home);
         rgNavigation = (RadioGroup) findViewById(R.id.tabs);
@@ -245,8 +246,10 @@ public class WEActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.menu_bind:
                 //umeng
+                loadPatch();
+                Log.e("WE", Environment.getExternalStorageDirectory().getAbsolutePath() + "/patch_signed_7zip.apk");
                 MobclickAgent.onEvent(WEActivity.this, "Bind_Phone");
-                DialogUtils.showBindDialog(WEActivity.this, new BindListener() {
+                /*DialogUtils.showBindDialog(WEActivity.this, new BindListener() {
                     @Override
                     public void onBindListener(String phone) {
                         if (StringUtils.isEmpty(phone) || !Util.isMobileNO(phone)) {
@@ -255,10 +258,17 @@ public class WEActivity extends BaseActivity implements View.OnClickListener{
                         }
                         bindLoverAccount(phone);
                     }
-                }, true);
+                }, true);*/
                 break;
         }
         return true;
+    }
+
+    /**
+     * 加载热补丁插件
+     */
+    public void loadPatch() {
+        TinkerInstaller.onReceiveUpgradePatch(getApplicationContext(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/patch_signed_7zip.apk");
     }
 
     /**

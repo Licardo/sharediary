@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
+import we.sharediary.tinkerutil.SampleApplicationContext;
+
 /**
  * Created by Jayden on 2016/1/10.
  */
@@ -41,7 +43,7 @@ public class BaseFragment extends Fragment {
      * @param value
      */
     public void writePreferences(String key, Object value){
-        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(Constants.KEY_PRERERENCES, Context.MODE_PRIVATE);
+        SharedPreferences preferences = SampleApplicationContext.application.getSharedPreferences(Constants.KEY_PRERERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         if (value instanceof String){
             editor.putString(key, (String) value);
@@ -60,7 +62,7 @@ public class BaseFragment extends Fragment {
      * @return
      */
     public Object readPreferences(String key, int flag){
-        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(Constants.KEY_PRERERENCES, Context.MODE_PRIVATE);
+        SharedPreferences preferences = SampleApplicationContext.application.getSharedPreferences(Constants.KEY_PRERERENCES, Context.MODE_PRIVATE);
         Object o = null;
         if (flag == 0){
             o = preferences.getString(key, "");

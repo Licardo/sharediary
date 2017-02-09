@@ -14,8 +14,8 @@ import org.ocpsoft.prettytime.units.Second;
 
 import java.util.Locale;
 
-import we.sharediary.base.BaseApplication;
 import we.sharediary.base.Constants;
+import we.sharediary.tinkerutil.SampleApplicationContext;
 
 /**
  * Created by Jayden on 2016/1/11.
@@ -39,8 +39,8 @@ public class Util {
      */
     public static int getNetworkType() {
         int netType = 0;
-        ConnectivityManager connectivityManager = (ConnectivityManager) BaseApplication
-                .getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) SampleApplicationContext.
+                application.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo == null) {
             return netType;
@@ -96,7 +96,7 @@ public class Util {
      * @param value
      */
     public static void writePreferences(String key, Object value){
-        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(Constants.KEY_PRERERENCES, Context.MODE_PRIVATE);
+        SharedPreferences preferences = SampleApplicationContext.application.getSharedPreferences(Constants.KEY_PRERERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         if (value instanceof String){
             editor.putString(key, (String) value);
@@ -115,7 +115,7 @@ public class Util {
      * @return
      */
     public static Object readPreferences(String key, int flag){
-        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(Constants.KEY_PRERERENCES, Context.MODE_PRIVATE);
+        SharedPreferences preferences = SampleApplicationContext.application.getSharedPreferences(Constants.KEY_PRERERENCES, Context.MODE_PRIVATE);
         Object o = null;
         if (flag == 0){
             o = preferences.getString(key, "");
