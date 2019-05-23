@@ -97,6 +97,7 @@ public class WEDetailActivity extends BaseActivity implements View.OnClickListen
         tvContent.setText(diary.getContent());
         if (diary.getAuthor() != null) {
             tvWriter.setText(String.format(getString(R.string.writer_text), diary.getAuthor().getUsername()));
+            tvWriter.setOnClickListener(this);
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM.d", Locale.ENGLISH);
         try {
@@ -122,25 +123,28 @@ public class WEDetailActivity extends BaseActivity implements View.OnClickListen
         diary.setObjectId(objectid);
         query.addWhereEqualTo("post", diary);
         query.include("post,author");
-        mDialog.show();
-        query.findObjects(this, new FindListener<WEComment>() {
+//        mDialog.show();
+        query.findObjects(new FindListener<WEComment>() {
             @Override
-            public void onSuccess(List<WEComment> list) {
-                mDialog.cancel();
-                commentList.clear();
-                commentList.addAll(list);
-                mAdapter.notifyDataSetChanged();
-                InputMethodManager imm = (InputMethodManager) etContent.getContext().getSystemService( Context.INPUT_METHOD_SERVICE );
-                if (imm.isActive()) {
-                    imm.hideSoftInputFromWindow(etContent.getApplicationWindowToken( ) , 0);
+            public void done(List<WEComment> list, BmobException e) {
+//                mDialog.cancel();
+                if (list == null) {
+                    return;
                 }
-
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                mDialog.cancel();
-                Snackbar.make(rvComment, i+s, Snackbar.LENGTH_LONG).show();
+                if (e == null) {
+                    commentList.clear();
+                    commentList.addAll(list);
+                    mAdapter.notifyDataSetChanged();
+                    InputMethodManager imm = (InputMethodManager) etContent.getContext().getSystemService( Context.INPUT_METHOD_SERVICE );
+                    if (imm == null) {
+                        return;
+                    }
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(etContent.getApplicationWindowToken( ) , 0);
+                    }
+                } else {
+                    Snackbar.make(rvComment, e.getErrorCode()+e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -200,18 +204,16 @@ public class WEDetailActivity extends BaseActivity implements View.OnClickListen
         comment.setAuthor(user);
         comment.setContent(content);
         mDialog.show();
-        comment.save(this, new SaveListener() {
+        comment.save(new SaveListener<String>() {
             @Override
-            public void onSuccess() {
+            public void done(String o, BmobException e) {
                 mDialog.cancel();
-                etContent.setText("");
-                getCommentsList(objectid);
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                mDialog.cancel();
-                Snackbar.make(mToolbar, i+s, Snackbar.LENGTH_LONG).show();
+                if (e == null) {
+                    etContent.setText("");
+                    getCommentsList(objectid);
+                } else {
+                    Snackbar.make(mToolbar, e.getErrorCode()+e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }

@@ -52,8 +52,8 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
         View view2 = inflater.inflate(R.layout.activity_welcome_view2, null);
         ImageView welcomeImage1 = (ImageView) view1.findViewById(R.id.iv_content);
         ImageView welcomeImage2 = (ImageView) view2.findViewById(R.id.iv_content);
-        loadImage(welcomeImage1, "http://fourbeautiful.cn/data/welcome1.jpg");
-        loadImage(welcomeImage2, "http://fourbeautiful.cn/data/welcome2.jpg");
+        loadImage(welcomeImage1, "http://bmob-cdn-7671.b0.upaiyun.com/2017/01/08/0b9ca2af22b84943b16dd81614595a4a.jpg");
+        loadImage(welcomeImage2, "http://bmob-cdn-7671.b0.upaiyun.com/2017/02/08/cc63e265a6644a52bdc86741017a5fcf.jpg");
         mViewList.add(view1);
         mViewList.add(view2);
         WelcomePageAdapter adapter = new WelcomePageAdapter(this);
@@ -100,23 +100,20 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btn_start:
-                Intent intent = new Intent(WelcomeActivity.this, LoadingActivity.class);
-                startActivity(intent);
-                finish();
-                break;
+        if (view.getId() == R.id.btn_start) {
+            Intent intent = new Intent(WelcomeActivity.this, LoadingActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
     static class WelcomePageAdapter extends PagerAdapter{
 
-        private SoftReference<WelcomeActivity> refrence;
         private WelcomeActivity mActivity;
 
-        public WelcomePageAdapter(WelcomeActivity activity) {
-            refrence = new SoftReference<>(activity);
-            mActivity = refrence.get();
+        WelcomePageAdapter(WelcomeActivity activity) {
+            SoftReference<WelcomeActivity> reference = new SoftReference<>(activity);
+            mActivity = reference.get();
         }
 
         @Override
@@ -152,7 +149,7 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
         try {
             myFileUrl = new URL(url);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            return null;
         }
         try {
             HttpURLConnection conn = (HttpURLConnection) myFileUrl
@@ -184,23 +181,21 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
     static class ImageAsyncTask extends AsyncTask<String, Integer, Bitmap>{
 
         private SoftReference<WelcomeActivity> mReference;
-        private WelcomeActivity mWelcomeActivity;
-        private ImageView mImageView;
+        private SoftReference<ImageView> mImageReference;
 
-        public ImageAsyncTask(WelcomeActivity activity, ImageView imageView) {
+        ImageAsyncTask(WelcomeActivity activity, ImageView imageView) {
             mReference = new SoftReference<>(activity);
-            mWelcomeActivity = mReference.get();
-            mImageView = imageView;
+            mImageReference = new SoftReference<>(imageView);
         }
 
         @Override
         protected Bitmap doInBackground(String... strings) {
-            return mWelcomeActivity.returnBitMap(strings[0]);
+            return mReference.get().returnBitMap(strings[0]);
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            mImageView.setImageBitmap(bitmap);
+            mImageReference.get().setImageBitmap(bitmap);
         }
     }
 }

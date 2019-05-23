@@ -103,30 +103,28 @@ public class DiaryListFragment extends BaseFragment implements ClickNameListener
         query.order("-updatedAt");
         query.include("author");
 //        mDialog.show();
-        query.findObjects(this.getActivity(), new FindListener<WEDiary>() {
+        query.findObjects(new FindListener<WEDiary>() {
             @Override
-            public void onSuccess(List<WEDiary> list) {
-//                mDialog.cancel();
-                if (list != null) {
+            public void done(List<WEDiary> list, BmobException e) {
+                if (list == null) {
+                    return;
+                }
+                if (e == null) {
                     handleResult(list, loadCount==0);
-                }
-                if (loadCount==0) {
-                    recyclerView.refreshComplate();
-                }else {
-                    recyclerView.loadMoreComplate();
-                }
-            }
-
-            @Override
-            public void onError(int i, String s) {
-//                mDialog.cancel();
-                Snackbar.make(recyclerView, i+"?"+s, Snackbar.LENGTH_LONG).setAction("retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        scrollTop();
-                        recyclerView.setRefresh(true);
+                    if (loadCount==0) {
+                        recyclerView.refreshComplate();
+                    }else {
+                        recyclerView.loadMoreComplate();
                     }
-                }).show();
+                } else {
+                    Snackbar.make(recyclerView, e.getErrorCode()+"?"+e.getMessage(), Snackbar.LENGTH_LONG).setAction("retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            scrollTop();
+                            recyclerView.setRefresh(true);
+                        }
+                    }).show();
+                }
             }
         });
     }

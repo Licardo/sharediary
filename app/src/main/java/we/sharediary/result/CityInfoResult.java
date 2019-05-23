@@ -1,5 +1,7 @@
 package we.sharediary.result;
 
+import java.util.List;
+
 /**
  * Created by zhanghao on 2016/11/6.
  */
@@ -7,213 +9,151 @@ package we.sharediary.result;
 public class CityInfoResult {
 
 
-    /**
-     * errNum : 0
-     * errMsg : success
-     * retData : {"city":"北京","pinyin":"beijing","citycode":"101010100","date":"15-02-11","time":"11:00","postCode":"100000","longitude":116.391,"latitude":39.904,"altitude":"33","weather":"晴","temp":"10","l_tmp":"-4","h_tmp":"10","WD":"无持续风向","WS":"微风(<10m/h)","sunrise":"07:12","sunset":"17:44"}
-     */
+    private List<ResultsVo> results;
 
-    private int errNum;
-    private String errMsg;
-    private RetDataBean retData;
-
-    public int getErrNum() {
-        return errNum;
+    public List<ResultsVo> getResults() {
+        return results;
     }
 
-    public void setErrNum(int errNum) {
-        this.errNum = errNum;
+    public void setResults(List<ResultsVo> results) {
+        this.results = results;
     }
 
-    public String getErrMsg() {
-        return errMsg;
-    }
-
-    public void setErrMsg(String errMsg) {
-        this.errMsg = errMsg;
-    }
-
-    public RetDataBean getRetData() {
-        return retData;
-    }
-
-    public void setRetData(RetDataBean retData) {
-        this.retData = retData;
-    }
-
-    public static class RetDataBean {
+    public static class ResultsVo {
         /**
-         * city : 北京
-         * pinyin : beijing
-         * citycode : 101010100
-         * date : 15-02-11
-         * time : 11:00
-         * postCode : 100000
-         * longitude : 116.391
-         * latitude : 39.904
-         * altitude : 33
-         * weather : 晴
-         * temp : 10
-         * l_tmp : -4
-         * h_tmp : 10
-         * WD : 无持续风向
-         * WS : 微风(<10m/h)
-         * sunrise : 07:12
-         * sunset : 17:44
+         * location : {"id":"WTMKQ069CCJ7","name":"杭州","country":"CN","path":"杭州,杭州,浙江,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"}
+         * now : {"text":"晴","code":"0","temperature":"31"}
+         * last_update : 2019-05-22T17:05:00+08:00
          */
 
-        private String city;
-        private String pinyin;
-        private String citycode;
-        private String date;
-        private String time;
-        private String postCode;
-        private double longitude;
-        private double latitude;
-        private String altitude;
-        private String weather;
-        private String temp;
-        private String l_tmp;
-        private String h_tmp;
-        private String WD;
-        private String WS;
-        private String sunrise;
-        private String sunset;
+        private LocationVo location;
+        private NowVo now;
+        private String last_update;
 
-        public String getCity() {
-            return city;
+        public LocationVo getLocation() {
+            return location;
         }
 
-        public void setCity(String city) {
-            this.city = city;
+        public void setLocation(LocationVo location) {
+            this.location = location;
         }
 
-        public String getPinyin() {
-            return pinyin;
+        public NowVo getNow() {
+            return now;
         }
 
-        public void setPinyin(String pinyin) {
-            this.pinyin = pinyin;
+        public void setNow(NowVo now) {
+            this.now = now;
         }
 
-        public String getCitycode() {
-            return citycode;
+        public String getLast_update() {
+            return last_update;
         }
 
-        public void setCitycode(String citycode) {
-            this.citycode = citycode;
+        public void setLast_update(String last_update) {
+            this.last_update = last_update;
         }
 
-        public String getDate() {
-            return date;
+        public static class LocationVo {
+            /**
+             * id : WTMKQ069CCJ7
+             * name : 杭州
+             * country : CN
+             * path : 杭州,杭州,浙江,中国
+             * timezone : Asia/Shanghai
+             * timezone_offset : +08:00
+             */
+
+            private String id;
+            private String name;
+            private String country;
+            private String path;
+            private String timezone;
+            private String timezone_offset;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getCountry() {
+                return country;
+            }
+
+            public void setCountry(String country) {
+                this.country = country;
+            }
+
+            public String getPath() {
+                return path;
+            }
+
+            public void setPath(String path) {
+                this.path = path;
+            }
+
+            public String getTimezone() {
+                return timezone;
+            }
+
+            public void setTimezone(String timezone) {
+                this.timezone = timezone;
+            }
+
+            public String getTimezone_offset() {
+                return timezone_offset;
+            }
+
+            public void setTimezone_offset(String timezone_offset) {
+                this.timezone_offset = timezone_offset;
+            }
         }
 
-        public void setDate(String date) {
-            this.date = date;
-        }
+        public static class NowVo {
+            /**
+             * text : 晴
+             * code : 0
+             * temperature : 31
+             */
 
-        public String getTime() {
-            return time;
-        }
+            private String text;
+            private String code;
+            private String temperature;
 
-        public void setTime(String time) {
-            this.time = time;
-        }
+            public String getText() {
+                return text;
+            }
 
-        public String getPostCode() {
-            return postCode;
-        }
+            public void setText(String text) {
+                this.text = text;
+            }
 
-        public void setPostCode(String postCode) {
-            this.postCode = postCode;
-        }
+            public String getCode() {
+                return code;
+            }
 
-        public double getLongitude() {
-            return longitude;
-        }
+            public void setCode(String code) {
+                this.code = code;
+            }
 
-        public void setLongitude(double longitude) {
-            this.longitude = longitude;
-        }
+            public String getTemperature() {
+                return temperature;
+            }
 
-        public double getLatitude() {
-            return latitude;
-        }
-
-        public void setLatitude(double latitude) {
-            this.latitude = latitude;
-        }
-
-        public String getAltitude() {
-            return altitude;
-        }
-
-        public void setAltitude(String altitude) {
-            this.altitude = altitude;
-        }
-
-        public String getWeather() {
-            return weather;
-        }
-
-        public void setWeather(String weather) {
-            this.weather = weather;
-        }
-
-        public String getTemp() {
-            return temp;
-        }
-
-        public void setTemp(String temp) {
-            this.temp = temp;
-        }
-
-        public String getL_tmp() {
-            return l_tmp;
-        }
-
-        public void setL_tmp(String l_tmp) {
-            this.l_tmp = l_tmp;
-        }
-
-        public String getH_tmp() {
-            return h_tmp;
-        }
-
-        public void setH_tmp(String h_tmp) {
-            this.h_tmp = h_tmp;
-        }
-
-        public String getWD() {
-            return WD;
-        }
-
-        public void setWD(String WD) {
-            this.WD = WD;
-        }
-
-        public String getWS() {
-            return WS;
-        }
-
-        public void setWS(String WS) {
-            this.WS = WS;
-        }
-
-        public String getSunrise() {
-            return sunrise;
-        }
-
-        public void setSunrise(String sunrise) {
-            this.sunrise = sunrise;
-        }
-
-        public String getSunset() {
-            return sunset;
-        }
-
-        public void setSunset(String sunset) {
-            this.sunset = sunset;
+            public void setTemperature(String temperature) {
+                this.temperature = temperature;
+            }
         }
     }
 }

@@ -11,9 +11,6 @@ public class StringUtils {
      * @return
      */
     public static boolean isEmpty(String param){
-        if (param == null || "".equals(param.trim())){
-            return true;
-        }
-        return false;
+        return param == null || "".equals(param.trim());
     }
 }

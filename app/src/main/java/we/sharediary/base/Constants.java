@@ -6,7 +6,7 @@ package we.sharediary.base;
 public class Constants {
     public static final String KEY_PRERERENCES = "WEDiary";
     public static final int REQ_TIMEOUT = 35000;
-    public static final String APIKEY = "833283c85ce4ab83faad2fc9ec2a55b1";//baidu个人key
+    public static final String APIKEY = "SPHAsXyRrw8qdnJsR";//心知天气的个人key
     public static final String BOMB_APPLICATION_ID = "228311f1d453c292b5af140d413ad143";//bomb的应用id
     public static final int MIDDLE_ARTICLE_FRAGMENT = 1;
     public static final int DRAWER_FRAGMENT = 2;

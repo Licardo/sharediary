@@ -13,8 +13,6 @@
     <!-- 获取sd卡写的权限，用于文件上传和下载 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <!-- 在SDCard中创建与删除文件权限 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!-- 摄像头 -->
@@ -28,7 +26,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <!-- Push service 运行需要的权限 -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <!-- 富媒体需要声明的权限 -->
@@ -55,6 +52,7 @@
         <activity android:name=".ui.AddDiaryActivity"/>
         <activity android:name=".ui.LoadingActivity">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -81,6 +79,10 @@
         </activity>
         <activity android:name=".ui.WelcomeActivity">
         </activity>
+        <provider
+            android:name="cn.bmob.v3.util.BmobContentProvider"
+            android:authorities="we.sharediary.BmobContentProvider">
+        </provider>
 
         <!-- push富媒体，使用富媒体推送必须声明 -->
         <activity

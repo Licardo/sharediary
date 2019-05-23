@@ -24,7 +24,7 @@ public class MainPresenter{
     }
 
     public void getWeatherInfo(){
-        mModel.getCityInfo("杭州", mContext, false, new MySubscriberListerner<CityInfoResult>() {
+        mModel.getCityInfo("hangzhou", mContext, false, new MySubscriberListerner<CityInfoResult>() {
 
             @Override
             public void onNext(CityInfoResult result) {

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import we.sharediary.R;
 import we.sharediary.base.BaseFragment;
@@ -119,32 +120,32 @@ public class WEMainFragment extends BaseFragment {
      */
     private void queryData(){
         mDialog.show();
-        BmobQuery<WEDiary> query = new BmobQuery();
+        BmobQuery<WEDiary> query = new BmobQuery<>();
         WEUser user = new WEUser();
-        String objectid = (String) readPreferences(Constants.USER_OBJECTID, 0);
-        user.setObjectId(objectid);
+        String objectId = (String) readPreferences(Constants.USER_OBJECTID, 0);
+        user.setObjectId(objectId);
         query.addWhereEqualTo("author", user);
         query.order("-updatedAt");
         query.setLimit(1);
         query.include("author");
-        query.findObjects(this.getActivity(), new FindListener<WEDiary>() {
-            @Override
-            public void onSuccess(List<WEDiary> list) {
-                mDialog.cancel();
-                if (list != null) {
-                    handleResult(list);
-                }
-            }
+        query.findObjects(new FindListener<WEDiary>() {
 
             @Override
-            public void onError(int i, String s) {
+            public void done(List<WEDiary> list, BmobException e) {
                 mDialog.cancel();
-                Snackbar.make(tvContent, i+"?"+s, Snackbar.LENGTH_LONG).setAction("retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        queryData();
-                    }
-                }).show();
+                if (list == null) {
+                    return;
+                }
+                if (e == null) {
+                    handleResult(list);
+                }else {
+                    Snackbar.make(tvContent, e.getErrorCode()+"?"+e.getMessage(), Snackbar.LENGTH_LONG).setAction("retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            queryData();
+                        }
+                    }).show();
+                }
             }
         });
     }

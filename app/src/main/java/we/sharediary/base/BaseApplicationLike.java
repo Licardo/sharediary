@@ -11,7 +11,6 @@ import android.support.multidex.MultiDex;
 
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
-import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.tinker.anno.DefaultLifeCycle;
 import com.tencent.tinker.lib.listener.DefaultPatchListener;
@@ -29,7 +28,6 @@ import java.io.File;
 import java.io.FileReader;
 
 import cn.bmob.newim.BmobIM;
-import io.fabric.sdk.android.Fabric;
 import we.sharediary.im.DemoMessageHandler;
 import we.sharediary.tinker_csdn.SampleResultService;
 import we.sharediary.tinkerutil.SampleApplicationContext;
@@ -97,7 +95,6 @@ public class BaseApplicationLike extends DefaultApplicationLike {
         super.onCreate();
         instance = this;
         app = getApplication();
-        Fabric.with(app, new Crashlytics());
         Fresco.initialize(app);
 
 //        Bmob.initialize(this, Constants.BOMB_APPLICATION_ID);

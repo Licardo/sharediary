@@ -3,18 +3,20 @@ package we.sharediary.util;
 import android.content.Context;
 import android.util.Log;
 
-import rx.Subscriber;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by zhanghao on 16/3/22.
  * 自定义Subscriber
  */
-public class Mysubscriber<T> extends Subscriber<T> implements OnCancleUnSubscriberListener{
+public class Mysubscriber<T> implements Observer<T>, OnCancleUnSubscriberListener{
 
     private MySubscriberListerner listerner;
     private MyProgressDialogHandler handler;
     private Context mContext;
     private boolean isShowDialog;
+    private Disposable mDisposable;
 
     /**
      *
@@ -30,17 +32,6 @@ public class Mysubscriber<T> extends Subscriber<T> implements OnCancleUnSubscrib
     }
 
     @Override
-    public void onCompleted() {
-        listerner.onComplete();
-        if (isShowDialog){
-            handler.obtainMessage(MyProgressDialogHandler.DISMISS_DIALOG).sendToTarget();
-        }else {
-            onUnSubcriber();
-        }
-        Log.i("Mysubscriber", "onCompleted");
-    }
-
-    @Override
     public void onError(Throwable e) {
         listerner.onErr(e);
         if (isShowDialog){
@@ -52,21 +43,44 @@ public class Mysubscriber<T> extends Subscriber<T> implements OnCancleUnSubscrib
     }
 
     @Override
+    public void onComplete() {
+        listerner.onComplete();
+        if (isShowDialog){
+            handler.obtainMessage(MyProgressDialogHandler.DISMISS_DIALOG).sendToTarget();
+        }else {
+            onUnSubcriber();
+        }
+        Log.i("Mysubscriber", "onCompleted");
+    }
+
+    @Override
+    public void onSubscribe(Disposable d) {
+        if (isShowDialog){
+            handler.obtainMessage(MyProgressDialogHandler.SHOW_DIALOG).sendToTarget();
+        }
+        mDisposable = d;
+    }
+
+    @Override
     public void onNext(T t) {
         Log.i("Mysubscriber", "onNext");
         listerner.onNext(t);
     }
 
-    @Override
-    public void onStart() {
-        if (isShowDialog){
-            handler.obtainMessage(MyProgressDialogHandler.SHOW_DIALOG).sendToTarget();
-        }
-        Log.i("Mysubscriber", "onStart");
-    }
+//    @Override
+//    public void onStart() {
+//        if (isShowDialog){
+//            handler.obtainMessage(MyProgressDialogHandler.SHOW_DIALOG).sendToTarget();
+//        }
+//        Log.i("Mysubscriber", "onStart");
+//    }
 
     @Override
     public void onUnSubcriber() {
-        this.unsubscribe();
+//        this.unsubscribe();
+        if (mDisposable == null) {
+            return;
+        }
+        mDisposable.dispose();
     }
 }

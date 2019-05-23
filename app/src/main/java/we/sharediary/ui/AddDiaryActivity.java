@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import we.sharediary.R;
@@ -120,19 +121,18 @@ public class AddDiaryActivity extends BaseActivity implements View.OnClickListen
         }else {
             mDialog.show();
             mBmobFile = new BmobFile(new File(imgPath));
-            mBmobFile.upload(AddDiaryActivity.this, new UploadFileListener() {
+            mBmobFile.upload(new UploadFileListener() {
                 @Override
-                public void onSuccess() {
+                public void done(BmobException e) {
                     mDialog.cancel();
-                    WEDiary diary = new WEDiary();
-                    initDiary(diary);
-                    diary.setAttachment(mBmobFile);
-                    saveDiary(diary);
-                }
-
-                @Override
-                public void onFailure(int i, String s) {
-                    Snackbar.make(etConent, i + s, Snackbar.LENGTH_LONG).show();
+                    if (e == null) {
+                        WEDiary diary = new WEDiary();
+                        initDiary(diary);
+                        diary.setAttachment(mBmobFile);
+                        saveDiary(diary);
+                    } else {
+                        Snackbar.make(etConent, e.getErrorCode() + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
                 }
             });
         }
@@ -144,18 +144,16 @@ public class AddDiaryActivity extends BaseActivity implements View.OnClickListen
      */
     private void saveDiary(WEDiary diary) {
         mDialog.show();
-        diary.save(this, new SaveListener() {
+        diary.save(new SaveListener<String>() {
             @Override
-            public void onSuccess() {
+            public void done(String o, BmobException e) {
                 mDialog.cancel();
-                BusProviderUtil.getBusInstance().post(new RefreshEvent(Constants.REFRESH_CODE));
-                finish();
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                mDialog.cancel();
-                Snackbar.make(etConent, i + s, Snackbar.LENGTH_LONG).show();
+                if (e == null) {
+                    BusProviderUtil.getBusInstance().post(new RefreshEvent(Constants.REFRESH_CODE));
+                    finish();
+                } else {
+                    Snackbar.make(etConent, e.getErrorCode() + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -195,11 +193,12 @@ public class AddDiaryActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void loadView(CityInfoResult result) {
-        if (result != null && result.getRetData() != null) {
-            CityInfoResult.RetDataBean data = result.getRetData();
-            writePreferences(Constants.LOW_TEMP, data.getL_tmp());
-            writePreferences(Constants.HIGH_TEMP, data.getH_tmp());
-            writePreferences(Constants.WEATHER, data.getWeather());
+        if (result != null && result.getResults() != null) {
+            CityInfoResult.ResultsVo resultsVo = result.getResults().get(0);
+//            CityInfoResult.RetDataBean data = result.getRetData();
+            writePreferences(Constants.LOW_TEMP, resultsVo.getNow().getTemperature());
+            writePreferences(Constants.HIGH_TEMP, resultsVo.getNow().getTemperature());
+            writePreferences(Constants.WEATHER, resultsVo.getNow().getText());
         }
     }
 

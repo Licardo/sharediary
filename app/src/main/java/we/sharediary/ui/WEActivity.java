@@ -278,17 +278,16 @@ public class WEActivity extends BaseActivity implements View.OnClickListener{
 
         WEUser user = new WEUser();
         user.setLoverPhone(phone);
-        user.update(this, userid, new UpdateListener() {
+        user.update(userid, new UpdateListener() {
             @Override
-            public void onSuccess() {
-                Snackbar.make(rbHome, "绑定成功", Snackbar.LENGTH_SHORT).show();
-                writePreferences(Constants.LOVER_USER_PHONE, phone);
-                BusProviderUtil.getBusInstance().post(new RefreshEvent(Constants.REFRESH_CODE));
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Snackbar.make(rbHome, i+s, Snackbar.LENGTH_LONG).show();
+            public void done(BmobException e) {
+                if (e == null) {
+                    Snackbar.make(rbHome, "绑定成功", Snackbar.LENGTH_SHORT).show();
+                    writePreferences(Constants.LOVER_USER_PHONE, phone);
+                    BusProviderUtil.getBusInstance().post(new RefreshEvent(Constants.REFRESH_CODE));
+                } else {
+                    Snackbar.make(rbHome, e.getErrorCode()+e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }

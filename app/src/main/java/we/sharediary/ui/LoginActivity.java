@@ -27,7 +27,7 @@ import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
-import cn.bmob.v3.listener.RequestSMSCodeListener;
+import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 import we.sharediary.R;
 import we.sharediary.base.BaseActivity;
@@ -136,9 +136,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void sendCode(String phone) {
         mDialog.show();
-        BmobSMS.requestSMSCode(this, phone, getString(R.string.sms_template), new RequestSMSCodeListener() {
+        BmobSMS.requestSMSCode(phone, getString(R.string.sms_template), new QueryListener<Integer>() {
             @Override
-            public void done(Integer integer, BmobException e) {
+            public void done(Integer smsId, BmobException e) {
                 mDialog.cancel();
                 if (e == null) {
                     Snackbar.make(btnAccquire, "验证码发送成功", Snackbar.LENGTH_SHORT).show();
@@ -153,6 +153,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void closeKey(EditText etContent) {
         InputMethodManager imm = (InputMethodManager) etContent.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) {
+            return;
+        }
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(etContent.getApplicationWindowToken(), 0);
         }
@@ -169,21 +172,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         user.setMobilePhoneNumber(phone);
         user.setUsername(Util.filterPhone(phone));
         user.setPassword(phone);
-//        user.signOrLogin(this, code, new SaveListener() {
+//        user.signOrLogin(code, new SaveListener() {
 //            @Override
-//            public void onSuccess() {
-//                getUserInfo(phone);
-//            }
-//
-//            @Override
-//            public void onFailure(int i, String s) {
-//                Snackbar.make(btnAccquire, i + s, Snackbar.LENGTH_LONG).show();
+//            public void done(Object o, BmobException e) {
+//                if (e == null) {
+//                    getUserInfo(phone);
+//                } else {
+//                    Snackbar.make(btnAccquire, e.getErrorCode() + e.getMessage(), Snackbar.LENGTH_LONG).show();
+//                }
 //            }
 //        });
-        user.signOrLoginByMobilePhone(this, phone, code, new LogInListener<WEUser>() {
+        WEUser.signOrLoginByMobilePhone(phone, code, new LogInListener<WEUser>() {
             @Override
             public void done(WEUser user, BmobException e) {
-                if (user != null) {
+                if (e == null) {
                     getUserInfo(phone);
                 }else {
                     Snackbar.make(btnAccquire, e.getMessage(), Snackbar.LENGTH_LONG).show();
@@ -206,7 +208,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void getUserInfo(final String phone) {
         mDialog.show();
         String sql = "select * from _User where mobilePhoneNumber = '" + phone + "'";
-        new BmobQuery<WEUser>().doSQLQuery(this, sql, new SQLQueryListener<WEUser>() {
+        new BmobQuery<WEUser>().doSQLQuery(sql, new SQLQueryListener<WEUser>() {
                     @Override
                     public void done(BmobQueryResult<WEUser> bmobQueryResult, BmobException e) {
                         mDialog.cancel();
